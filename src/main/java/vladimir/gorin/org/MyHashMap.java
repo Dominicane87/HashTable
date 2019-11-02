@@ -2,13 +2,13 @@ package vladimir.gorin.org;
 
 import java.util.HashSet;
 
-public class MyHashMap {
+class MyHashMap {
     private MyLinkedList<MyObjectEntry>[] hashMap;
-    static final double CAPACITY_LIMIT = 0.75;
-    static final int DEEPNESS_LIST =16;
-    public int AMOUNT_BUCKETS =5;
+    private static final double CAPACITY_LIMIT = 0.75;
+    private static final int DEEPNESS_LIST =16;
+    int AMOUNT_BUCKETS =5;
 
-    int count = 0;
+    private int count = 0;
 
     MyHashMap() {
         hashMap = new MyLinkedList[AMOUNT_BUCKETS];
@@ -19,24 +19,20 @@ public class MyHashMap {
 
     private MyLinkedList<MyObjectEntry> getList(Object key) {
         int hashPos = findHashTable(key);
-        MyLinkedList<MyObjectEntry> myObjectEntries = hashMap[hashPos];
-        return myObjectEntries;
+        return hashMap[hashPos];
     }
 
 
-    public <myHashMap> void increaseMyHashMap(MyLinkedList<MyObjectEntry>[] hashMap ){
+    private <myHashMap> void increaseMyHashMap(MyLinkedList<MyObjectEntry>[] hashMap){
         AMOUNT_BUCKETS=AMOUNT_BUCKETS*2;
         MyLinkedList<MyObjectEntry>[] tmpHashMap = new MyLinkedList[AMOUNT_BUCKETS];
         for (int i=0;i<tmpHashMap.length;i++){
             tmpHashMap[i]=new MyLinkedList<>();
         }
-        for (int i=0;i<hashMap.length;i++){
-            tmpHashMap[i]=hashMap[i];
-        }
-        hashMap=tmpHashMap;
+        System.arraycopy(hashMap, 0, tmpHashMap, 0, hashMap.length);
     }
 
-    public void add(Object key, Object value) {
+    void add(Object key, Object value) {
         //Think about increasing massive and evolving
         if (size()>CAPACITY_LIMIT*AMOUNT_BUCKETS*DEEPNESS_LIST) increaseMyHashMap(hashMap);
 
@@ -50,11 +46,11 @@ public class MyHashMap {
 
     }
 
-    public void update(Object key, Object value) {
+    void update(Object key, Object value) {
         getList(key).findByKey(new MyObjectEntry(key, null)).setValue(value);
     }
 
-    public Object getMyObject(Object key){
+    Object getMyObject(Object key){
         try {
            return getList(key).findByKey(new MyObjectEntry(key, null)).getValue();
         } catch (NullPointerException e){
@@ -62,14 +58,14 @@ public class MyHashMap {
         }
     }
 
-    public void delete(Object key) {
+    void delete(Object key) {
         MyObjectEntry isDeleting = new MyObjectEntry(key, null);
-       Boolean result = getList(key).remove(isDeleting);
+       boolean result = getList(key).remove(isDeleting);
        if (result) count--;
     }
 
 
-    public boolean isExistKey(Object key) {
+    boolean isExistKey(Object key) {
         if (key==null) throw new NullPointerException("Input key is null");
         HashSet<MyObjectEntry> set = entrySet();
         for (MyObjectEntry myObjectEntry : set) {
@@ -80,7 +76,7 @@ public class MyHashMap {
         return false;
     }
 
-    public boolean isExistValue(Object value) {
+    boolean isExistValue(Object value) {
         HashSet<MyObjectEntry> set = entrySet();
         for (MyObjectEntry myObjectEntry : set) {
             if (myObjectEntry.getValue().equals(value)) {
@@ -90,7 +86,7 @@ public class MyHashMap {
         return false;
     }
 
-    public int size() {
+    int size() {
 //        int count = 0;
 //        for (MyLinkedList<MyObjectEntry> myObjectEntries : hashMap) {
 //            count += myObjectEntries.size();
