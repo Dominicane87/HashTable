@@ -11,7 +11,7 @@ public class MyHashMapTest {
     @Test
     public  void increaseTable(){
         for (int i = 0; i <66 ; i++) {
-          myMap.add(i,1);  
+          myMap.add(i,1);
         }
         assertEquals(myMap.AMOUNT_BUCKETS,10);
     }
@@ -23,8 +23,6 @@ public class MyHashMapTest {
             myMap.add(null,"2");
             myMap.add("1","3");
         } catch (NullPointerException e){
-            assertTrue(true);
-        }catch (IllegalMonitorStateException e){
             assertTrue(true);
         }
 
@@ -75,11 +73,7 @@ public class MyHashMapTest {
     @Test
     public void getMyObject() {
         myMap.add("3","2");
-        assertEquals(new MyObjectEntry("3","2"),myMap.getMyObject("3"));
-        try {
-            myMap.getMyObject("4");
-        } catch (IllegalMonitorStateException e){
-            assertTrue(true);
-        }
+        assertEquals("2",myMap.getMyObject("3"));
+        assertFalse(myMap.getMyObject("4")!=null);
     }
 }

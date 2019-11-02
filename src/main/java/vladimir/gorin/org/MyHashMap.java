@@ -46,19 +46,20 @@ public class MyHashMap {
         if (!isExistKey(key)) {
             getList(key).add(myObjectEntry);
             count++;
-        } else {throw new IllegalMonitorStateException("This key is already exist");}
+        } else {throw new NullPointerException("This key is already exist");}
 
     }
 
     public void update(Object key, Object value) {
-        MyObjectEntry isInHash = getMyObject(key);
-        isInHash.setValue(value);
+        getList(key).findByKey(new MyObjectEntry(key, null)).setValue(value);
     }
 
-    public MyObjectEntry getMyObject(Object key){
-        MyObjectEntry isFinding = new MyObjectEntry(key, null);
-        MyObjectEntry isInHash = getList(key).findByKey(isFinding);
-        return isInHash;
+    public Object getMyObject(Object key){
+        try {
+           return getList(key).findByKey(new MyObjectEntry(key, null)).getValue();
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 
     public void delete(Object key) {
@@ -69,7 +70,7 @@ public class MyHashMap {
 
 
     public boolean isExistKey(Object key) {
-        if (key==null) throw new IllegalMonitorStateException("Input key is null");
+        if (key==null) throw new NullPointerException("Input key is null");
         HashSet<MyObjectEntry> set = entrySet();
         for (MyObjectEntry myObjectEntry : set) {
             if (myObjectEntry.getKey().equals(key)) {
